@@ -1,20 +1,20 @@
 package com.example.testapp
 
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.FragmentContainerView
+import androidx.fragment.app.commit
 import com.example.testapp.db.TestApp
-import com.example.testapp.model.Notes
-import com.example.testapp.model.Todo
-import io.realm.kotlin.Realm
+import com.example.testapp.fragment.OfflineFragment
+import com.example.testapp.fragment.OnlineFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,32 +30,20 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val realm = TestApp.realm // Assuming 'config' is your RealmConfiguration
+        val onlineOperation = findViewById<ImageView>(R.id.online_optn)
+        val offlineOperation = findViewById<ImageView>(R.id.offline_optn)
 
-        insertPerson(realm, "Alice")
-        insertPerson(realm, "Bob")
-        insertPerson(realm, "Kshitij")
-        insertPerson(realm, "Anushka")
-
-        CoroutineScope(Dispatchers.IO).launch {
-            readPersons(realm)
-        }
-    }
-
-    suspend fun readPersons(realm: Realm) {
-        withContext(Dispatchers.IO) {
-            val allPersons = realm.query(Notes::class).find()
-            for (person in allPersons) {
-                println("(1) 12221Name1: ${person.noteText}, ID: ${person.id}")
+        onlineOperation.setOnClickListener {
+            supportFragmentManager.commit {
+                replace(R.id.fragment_container_view, OnlineFragment())
             }
         }
-    }
 
-    fun insertPerson(realm: Realm, name: String) {
-        realm.writeBlocking {
-            copyToRealm(Notes().apply {
-                this.noteText = name
-            })
+        offlineOperation.setOnClickListener {
+            supportFragmentManager.commit {
+                replace(R.id.fragment_container_view, OfflineFragment())
+            }
         }
+
     }
 }

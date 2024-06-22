@@ -5,12 +5,26 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.testapp.R
+import com.example.testapp.adapter.OfflineDataAdapter
+import com.example.testapp.db.TestApp
+import com.example.testapp.model.Notes
+import com.example.testapp.utils.OnItemClickListener
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
-class OfflineFragment : Fragment() {
+class OfflineFragment : Fragment(), OnItemClickListener {
 
-    val viewModel: OnlineViewModel by viewModels()
+    val offlineViewModel: OfflineViewModel by viewModels()
+    var NotesList: List<Notes> = ArrayList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -20,9 +34,37 @@ class OfflineFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_offline, container, false)
+        val view = inflater.inflate(R.layout.fragment_offline, container, false)
+
+        val addBtn = view.findViewById<FloatingActionButton>(R.id.add_btn)
+        val offlineTaskRecyclerview =
+            view.findViewById<RecyclerView>(R.id.offline_task_recyclerview)
+
+        addBtn.setOnClickListener {
+            offlineViewModel.openAddFragment(this.parentFragmentManager)
+        }
+
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val getNotes = async { NotesList = offlineViewModel.readPersons() }
+            CoroutineScope(Dispatchers.Main).launch {
+                getNotes.await()
+//                offlineViewModel.deleteEntry(NotesList[0].id, realm)
+                offlineTaskRecyclerview.layoutManager = LinearLayoutManager(context)
+                offlineTaskRecyclerview.adapter =
+                    OfflineDataAdapter(this@OfflineFragment, NotesList)
+            }
+        }
+
+        return view
     }
+
 
     companion object {
     }
+
+    override fun onItemClick(note: Notes, isDeleteClicked: Boolean) {
+        offlineViewModel.onItemClick(note, isDeleteClicked)
+    }
+
 }
