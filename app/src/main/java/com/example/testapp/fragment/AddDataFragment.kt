@@ -1,5 +1,6 @@
 package com.example.testapp.fragment
 
+import android.content.Context
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,14 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import androidx.fragment.app.commit
 import com.example.testapp.R
 
 class AddDataFragment : Fragment() {
-
-    companion object {
-        fun addDataFragment() = AddDataFragment()
-    }
-
     private val viewModel: AddDataViewModel by viewModels()
 
     override fun onCreateView(
@@ -26,7 +24,11 @@ class AddDataFragment : Fragment() {
         val nameEditText = view.findViewById<EditText>(R.id.task)
         val button = view.findViewById<Button>(R.id.submit_btn)
         button.setOnClickListener {
-            context?.let { it -> viewModel.submitData(it,nameEditText.text.toString()) }
+            context?.let { viewModel.submitData(it,nameEditText.text.toString()) }
+            Toast.makeText(requireContext(), "Added successfully", Toast.LENGTH_SHORT).show()
+            requireActivity().supportFragmentManager.commit {
+                replace(R.id.fragment_container_view, OfflineFragment())
+            }
         }
         return view
     }

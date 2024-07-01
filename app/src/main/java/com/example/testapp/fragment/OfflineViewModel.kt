@@ -1,9 +1,13 @@
 package com.example.testapp.fragment
 
 import android.util.Log
+import android.widget.Toast
+import androidx.compose.ui.window.Dialog
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModel
+import com.example.testapp.MainActivity
 import com.example.testapp.R
 import com.example.testapp.db.TestApp
 import com.example.testapp.model.Notes
@@ -34,9 +38,28 @@ class OfflineViewModel :ViewModel() {
         return allNotes
     }
 
-    fun onItemClick(note: Notes,isDelete:Boolean) {
-        if (isDelete) deleteEntry(note.id)
+    fun onItemClick(note: Notes,
+                    isDelete:Boolean,
+                    isUpdate:Boolean,
+                    supportFragmentManager: FragmentManager ?= null) {
+        if (isDelete) {
+            deleteEntry(note.id)
+            supportFragmentManager?.commit {
+                replace(R.id.fragment_container_view, OfflineFragment())
+            }
+        }
+
+        else if (isUpdate) {
+            openUpdateFragment(note, supportFragmentManager)
+        }
     }
+
+    private fun openUpdateFragment(note: Notes, supportFragmentManager: FragmentManager?) {
+        supportFragmentManager?.commit {
+            replace(R.id.fragment_container_view, UpdateDataFragment(note))
+        }
+    }
+
 
     fun deleteEntry(id:ObjectId) {
 

@@ -23,7 +23,7 @@ import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 
 class OnlineFragment : Fragment() {
-    val viewModel: OnlineViewModel by viewModels()
+    private val viewModel: OnlineViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

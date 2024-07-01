@@ -5,4 +5,5 @@
     <string name="online">Online data</string>
     <string name="offline">Offline data</string>
     <string name="add_task">Add Task\n</string>
+    <string name="update">Update</string>
 </resources>

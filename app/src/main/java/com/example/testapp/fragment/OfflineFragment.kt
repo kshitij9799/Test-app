@@ -5,13 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testapp.R
 import com.example.testapp.adapter.OfflineDataAdapter
-import com.example.testapp.db.TestApp
 import com.example.testapp.model.Notes
 import com.example.testapp.utils.OnItemClickListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -24,10 +23,6 @@ class OfflineFragment : Fragment(), OnItemClickListener {
 
     val offlineViewModel: OfflineViewModel by viewModels()
     var NotesList: List<Notes> = ArrayList()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,22 +44,26 @@ class OfflineFragment : Fragment(), OnItemClickListener {
             val getNotes = async { NotesList = offlineViewModel.readPersons() }
             CoroutineScope(Dispatchers.Main).launch {
                 getNotes.await()
-//                offlineViewModel.deleteEntry(NotesList[0].id, realm)
                 offlineTaskRecyclerview.layoutManager = LinearLayoutManager(context)
                 offlineTaskRecyclerview.adapter =
-                    OfflineDataAdapter(this@OfflineFragment, NotesList)
+                    OfflineDataAdapter(this@OfflineFragment, NotesList,parentFragmentManager)
             }
         }
 
         return view
     }
 
-
-    companion object {
-    }
-
-    override fun onItemClick(note: Notes, isDeleteClicked: Boolean) {
-        offlineViewModel.onItemClick(note, isDeleteClicked)
+    override fun onItemClick(
+        note: Notes,
+        isDeleteClicked: Boolean?,
+        isUpdate: Boolean?,
+        supportFragmentManager: FragmentManager?
+    ) {
+        if (isDeleteClicked != null) {
+            if (isUpdate != null) {
+                offlineViewModel.onItemClick(note, isDeleteClicked, isUpdate, supportFragmentManager)
+            }
+        }
     }
 
 }

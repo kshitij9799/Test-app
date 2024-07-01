@@ -11,7 +11,6 @@ import kotlinx.coroutines.withContext
 
 class AddDataViewModel : ViewModel() {
     fun submitData(context: Context, text: String) {
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
 
         val realm = TestApp.realm // Assuming 'config' is your RealmConfiguration
 

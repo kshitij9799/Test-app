@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+<!--    whenever you want to use http instead of https in your project refer
+https://www.geeksforgeeks.org/android-cleartext-http-traffic-not-permitted/ this link  -->
     <application
         android:name="com.example.testapp.db.TestApp"
         android:allowBackup="true"
