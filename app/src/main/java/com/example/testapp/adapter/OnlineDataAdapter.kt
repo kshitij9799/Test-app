@@ -27,6 +27,5 @@ class OnlineDataAdapter(private val onlineData: MutableList<Todo> ) :  RecyclerV
 
     inner class OnlineViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val text =  view.findViewById<TextView>(R.id.onlineTodoTextView)
-        val image =  view.findViewById<ImageView>(R.id.onlineTodoTaskImageView)
     }
 }

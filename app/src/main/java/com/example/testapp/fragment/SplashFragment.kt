@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.lifecycle.lifecycleScope
+import com.example.testapp.MainActivity
 import com.example.testapp.R
 class SplashFragment : Fragment() {
 
@@ -12,6 +15,8 @@ class SplashFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_splash, container, false)
+        val view = inflater.inflate(R.layout.fragment_splash, container, false)
+        activity?.findViewById<LinearLayout>(R.id.bottom_bar)?.visibility = View.GONE
+        return view
     }
 }

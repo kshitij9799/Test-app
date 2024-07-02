@@ -1,7 +1,9 @@
 package com.example.testapp
 
 import android.os.Bundle
+import android.view.View.VISIBLE
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -9,17 +11,29 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.commit
+import androidx.lifecycle.lifecycleScope
 import com.example.testapp.db.TestApp
 import com.example.testapp.fragment.OfflineFragment
 import com.example.testapp.fragment.OnlineFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
 
     val mainViewModel: MainViewModel by viewModels()
+
+    init {
+        lifecycleScope.launch {
+            delay(2500)
+            supportFragmentManager.commit {
+                replace(R.id.fragment_container_view, OnlineFragment())
+            }
+            findViewById<LinearLayout>(R.id.bottom_bar).visibility = VISIBLE
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
