@@ -1,12 +1,15 @@
 package com.example.testapp
 
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.TextUtils.replace
 import android.view.View.VISIBLE
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.graphics.Color
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentContainerView
@@ -47,13 +50,23 @@ class MainActivity : AppCompatActivity() {
         val onlineOperation = findViewById<ImageView>(R.id.online_optn)
         val offlineOperation = findViewById<ImageView>(R.id.offline_optn)
 
+        val grayColor = ColorStateList.valueOf(resources.getColor(R.color.gray))
+        val blackColor = ColorStateList.valueOf(resources.getColor(R.color.black))
+
+        onlineOperation.imageTintList = blackColor
+        offlineOperation.imageTintList = grayColor
+
         onlineOperation.setOnClickListener {
+            onlineOperation.imageTintList = blackColor
+            offlineOperation.imageTintList = grayColor
             supportFragmentManager.commit {
                 replace(R.id.fragment_container_view, OnlineFragment())
             }
         }
 
         offlineOperation.setOnClickListener {
+            onlineOperation.imageTintList = grayColor
+            offlineOperation.imageTintList = blackColor
             supportFragmentManager.commit {
                 replace(R.id.fragment_container_view, OfflineFragment())
             }

@@ -28,7 +28,7 @@ class OfflineDataAdapter(private val listener: OnItemClickListener, private val 
             listener.onItemClick(itemList[position], isDeleteClicked = true, supportFragmentManager = supportFragmentManager)
         }
 
-        holder.itemView.setOnClickListener {
+        holder.edit_btn.setOnClickListener {
             listener.onItemClick(itemList[position], isUpdate = true, supportFragmentManager = supportFragmentManager)
         }
     }
@@ -36,6 +36,7 @@ class OfflineDataAdapter(private val listener: OnItemClickListener, private val 
     inner class OfflineViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val text =  view.findViewById<TextView>(R.id.onlineTodoTextView)
         val delete_btn = view.findViewById<ImageView>(R.id.delete_optn)
+        val edit_btn = view.findViewById<ImageView>(R.id.edit_optn)
     }
 
 }

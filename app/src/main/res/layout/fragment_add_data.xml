@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
     tools:context=".fragment.AddDataFragment">
 
     <TextView
@@ -12,6 +13,7 @@
         android:gravity="center"
         android:textSize="20sp"
         android:textStyle="bold|italic"
+        android:textColor="@color/black"
         android:text="@string/add_task"/>
 
     <EditText
